@@ -2,22 +2,22 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:alpine
+    image: postgres:latest
     ports:
-      - "5433:5432"
+      - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: mycoolpassword
-      POSTGRES_DB: ulms
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
   app:
-    restart: always
     build: .
     ports:
-      - "8081:8081"
+      - '8081:8081'
     depends_on:
       - db
     environment:
-      DB_PASS: "mycoolpassword"
-      DB_USER: "postgres"
-      DB_URL: "jdbc:postgresql://localhost:5433/ulms"
-      JWT_SECRET: "b31a425bb325e0b1ddea4ff5c60cd86c"
-      JAVA_OPTS: "-Xmx512m"
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USER: ${DB_USER}
+      JWT_SECRET: ${JWT_SECRET}
+      JAVA_OPTS: -Xmx512m
