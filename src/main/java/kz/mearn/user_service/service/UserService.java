@@ -1,5 +1,6 @@
 package kz.mearn.user_service.service;
 
+import kz.mearn.user_service.service.exception.UserNotFoundException;
 import kz.mearn.user_service.user.entity.User;
 import kz.mearn.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public User findByUsername(String username) {
-        return repository.findByUsername(username);
+        return repository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     public boolean exists(Long id) {
